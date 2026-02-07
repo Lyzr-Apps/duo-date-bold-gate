@@ -1,0 +1,15 @@
+{
+  "workflow_name": "DoubleMate Venue Recommendation Workflow",
+  "created_at": "2026-02-07",
+  "agents": [
+    {
+      "agent_name": "Venue Recommendation Agent",
+      "agent_id": "69877e88516690c4422a963e",
+      "node_id": "venue_recommendation_agent",
+      "provider": "perplexity",
+      "model": "sonar-pro",
+      "status": "active"
+    }
+  ],
+  "total_agents": 1
+}

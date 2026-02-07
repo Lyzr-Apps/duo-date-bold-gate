@@ -1,0 +1,74 @@
+{
+  "agent_name": "Venue Recommendation Agent",
+  "agent_id": "69877e88516690c4422a963e",
+  "test_message": "We need venue recommendations for a double date in San Francisco. Pair 1 (Sarah & Mike): interests include craft beer, live music, outdoor activities. Pair 2 (Emma & Jake): interests include fine dining, art galleries, hiking. Budget: $30-50 per person. Looking for something fun and social for Saturday evening.",
+  "expected_purpose": "Recommends double date venues based on combined interests, location, and preferences",
+  "timestamp": "2026-02-07T18:04:48.730508",
+  "is_valid_json": true,
+  "validation_errors": [],
+  "actual_response": {
+    "status": "success",
+    "result": {
+      "recommendations": [
+        {
+          "venue_name": "The Paint Bar",
+          "venue_type": "Activity|Entertainment",
+          "address": "1234 Union St, San Francisco, CA 94123",
+          "why_suggested": "The Paint Bar combines art and social interaction, allowing everyone to enjoy a fun painting session while sipping on craft beer. It's a perfect blend of art for Emma & Jake and a laid-back environment for Sarah & Mike, making it ideal for a relaxed yet engaging evening.",
+          "estimated_cost_per_person": "$35",
+          "suitability_score": "8",
+          "highlights": [
+            "Craft beer available",
+            "Guided painting sessions",
+            "Social-friendly atmosphere"
+          ]
+        },
+        {
+          "venue_name": "Fort Point Beer Company",
+          "venue_type": "Bar|Outdoor",
+          "address": "644 Gateway Blvd, San Francisco, CA 94130",
+          "why_suggested": "This brewery features outdoor seating with stunning views of the Golden Gate Bridge. It caters well to Sarah & Mike\u2019s interest in craft beer while also offering a chill spot for socializing and enjoying the scenery, appealing to the group's relaxed energy.",
+          "estimated_cost_per_person": "$25",
+          "suitability_score": "9",
+          "highlights": [
+            "Local craft beers",
+            "Outdoor patio",
+            "Food trucks nearby"
+          ]
+        },
+        {
+          "venue_name": "Chowder & Crab Fest",
+          "venue_type": "Food Festival|Outdoor",
+          "address": "Pier 39, San Francisco, CA 94133",
+          "why_suggested": "This outdoor event combines fine dining with casual outdoor enjoyment. The festival includes food stalls featuring local crab and chowder specialties, and live music, appealing to all couples' interests in food and entertainment.",
+          "estimated_cost_per_person": "$40",
+          "suitability_score": "9",
+          "highlights": [
+            "Variety of seafood options",
+            "Live music",
+            "Great atmosphere for socializing"
+          ]
+        },
+        {
+          "venue_name": "Mission Dolores Park",
+          "venue_type": "Outdoor",
+          "address": "19th St & Dolores St, San Francisco, CA 94114",
+          "why_suggested": "For a more relaxed experience, hosting a small picnic at Mission Dolores Park can be a great idea. With beautiful views of the city, it caters to the outdoor preferences of both pairs while still allowing for plenty of social interaction.",
+          "estimated_cost_per_person": "$15",
+          "suitability_score": "7",
+          "highlights": [
+            "Scenic views",
+            "Casual atmosphere",
+            "Picnic-friendly"
+          ]
+        }
+      ],
+      "total_recommendations": 4
+    },
+    "metadata": {
+      "agent_name": "Venue Recommendation Agent",
+      "timestamp": "2023-10-04T16:30:00Z"
+    }
+  },
+  "raw_response": "{\n  \"status\": \"success\",\n  \"result\": {\n    \"recommendations\": [\n      {\n        \"venue_name\": \"The Paint Bar\",\n        \"venue_type\": \"Activity|Entertainment\",\n        \"address\": \"1234 Union St, San Francisco, CA 94123\",\n        \"why_suggested\": \"The Paint Bar combines art and social interaction, allowing everyone to enjoy a fun painting session while sipping on craft beer. It's a perfect blend of art for Emma & Jake and a laid-back environment for Sarah & Mike, making it ideal for a relaxed yet engaging evening.\",\n        \"estimated_cost_per_person\": \"$35\",\n        \"suitability_score\": \"8\",\n        \"highlights\": [\"Craft beer available\", \"Guided painting sessions\", \"Social-friendly atmosphere\"]\n      },\n      {\n        \"venue_name\": \"Fort Point Beer Company\",\n        \"venue_type\": \"Bar|Outdoor\",\n        \"address\": \"644 Gateway Blvd, San Francisco, CA 94130\",\n        \"why_suggested\": \"This brewery features outdoor seating with stunning views of the Golden Gate Bridge. It caters well to Sarah & Mike\u2019s interest in craft beer while also offering a chill spot for socializing and enjoying the scenery, appealing to the group's relaxed energy.\",\n        \"estimated_cost_per_person\": \"$25\",\n        \"suitability_score\": \"9\",\n        \"highlights\": [\"Local craft beers\", \"Outdoor patio\", \"Food trucks nearby\"]\n      },\n      {\n        \"venue_name\": \"Chowder & Crab Fest\",\n        \"venue_type\": \"Food Festival|Outdoor\",\n        \"address\": \"Pier 39, San Francisco, CA 94133\",\n        \"why_suggested\": \"This outdoor event combines fine dining with casual outdoor enjoyment. The festival includes food stalls featuring local crab and chowder specialties, and live music, appealing to all couples' interests in food and entertainment.\",\n        \"estimated_cost_per_person\": \"$40\",\n        \"suitability_score\": \"9\",\n        \"highlights\": [\"Variety of seafood options\", \"Live music\", \"Great atmosphere for socializing\"]\n      },\n      {\n        \"venue_name\": \"Mission Dolores Park\",\n        \"venue_type\": \"Outdoor\",\n        \"address\": \"19th St & Dolores St, San Francisco, CA 94114\",\n        \"why_suggested\": \"For a more relaxed experience, hosting a small picnic at Mission Dolores Park can be a great idea. With beautiful views of the city, it caters to the outdoor preferences of both pairs while still allowing for plenty of social interaction.\",\n        \"estimated_cost_per_person\": \"$15\",\n        \"suitability_score\": \"7\",\n        \"highlights\": [\"Scenic views\", \"Casual atmosphere\", \"Picnic-friendly\"]\n      }\n    ],\n    \"total_recommendations\": 4\n  },\n  \"metadata\": {\n    \"agent_name\": \"Venue Recommendation Agent\",\n    \"timestamp\": \"2023-10-04T16:30:00Z\"\n  }\n}"
+}
