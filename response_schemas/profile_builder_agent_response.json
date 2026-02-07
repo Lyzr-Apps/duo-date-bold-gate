@@ -1,0 +1,66 @@
+{
+  "agent_name": "Profile Builder Agent",
+  "agent_id": "698781e787eeda742a24accd",
+  "agent_purpose": "conversational_onboarding",
+  "description": "Conversational onboarding agent that builds user profiles through natural dialogue",
+  "response_schema": {
+    "message": "string",
+    "profileData": {
+      "name": "null",
+      "age": "null",
+      "gender": "null",
+      "location": "null",
+      "occupation": "null",
+      "interests": "null",
+      "lookingFor": "null",
+      "dealBreakers": "null",
+      "idealDateType": "null",
+      "preferredGender": "null",
+      "preferredAgeMin": "null",
+      "preferredAgeMax": "null"
+    },
+    "isComplete": "boolean",
+    "nextQuestion": "string"
+  },
+  "example_response": {
+    "message": "Hey there! Welcome to DoubleMate! I'm here to help you create your dating profile. Let's make this fun and easy - I'll just ask you a few questions to get to know you better. First off, what's your name?",
+    "profileData": {
+      "name": null,
+      "age": null,
+      "gender": null,
+      "location": null,
+      "occupation": null,
+      "interests": null,
+      "lookingFor": null,
+      "dealBreakers": null,
+      "idealDateType": null,
+      "preferredGender": null,
+      "preferredAgeMin": null,
+      "preferredAgeMax": null
+    },
+    "isComplete": false,
+    "nextQuestion": "name"
+  },
+  "is_actual_tested": true,
+  "test_timestamp": "2026-02-07T18:18:23.238183",
+  "test_message_used": "Hello, provide a sample response",
+  "actual_test_response": {
+    "message": "Hey there! Welcome to DoubleMate! I'm here to help you create your dating profile. Let's make this fun and easy - I'll just ask you a few questions to get to know you better. First off, what's your name?",
+    "profileData": {
+      "name": null,
+      "age": null,
+      "gender": null,
+      "location": null,
+      "occupation": null,
+      "interests": null,
+      "lookingFor": null,
+      "dealBreakers": null,
+      "idealDateType": null,
+      "preferredGender": null,
+      "preferredAgeMin": null,
+      "preferredAgeMax": null
+    },
+    "isComplete": false,
+    "nextQuestion": "name"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "agent_name": "Daily Match Agent",
+  "agent_id": "6987820187eeda742a24acd1",
+  "agent_purpose": "daily_matchmaking",
+  "description": "AI matchmaker that curates one high-quality daily match based on compatibility",
+  "response_schema": {
+    "status": "string",
+    "message": "string"
+  },
+  "example_response": {
+    "status": "no_matches",
+    "message": "No compatible matches found today. Try expanding your preferences or check back tomorrow!"
+  },
+  "is_actual_tested": true,
+  "test_timestamp": "2026-02-07T18:18:48.648862",
+  "test_message_used": "Hello, provide a sample response",
+  "actual_test_response": {
+    "status": "no_matches",
+    "message": "No compatible matches found today. Try expanding your preferences or check back tomorrow!"
+  }
+}

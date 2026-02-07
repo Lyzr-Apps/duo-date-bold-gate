@@ -1,0 +1,106 @@
+// DoubleMate Database Schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User Profile - Created through conversational onboarding
+model UserProfile {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Basic Info
+  name        String
+  age         Int
+  gender      String
+  location    String
+  occupation  String?
+  bio         String?
+
+  // Interests and Preferences (JSON arrays)
+  interests        String[] // e.g., ["hiking", "craft beer", "live music"]
+  lookingFor       String   // What they're seeking in matches
+  dealBreakers     String[] // Things they want to avoid
+  idealDateType    String[] // Preferred date activities
+
+  // Profile Photos
+  photos String[] // Array of photo URLs
+
+  // Partner Preferences
+  preferredGender     String[]
+  preferredAgeMin     Int      @default(18)
+  preferredAgeMax     Int      @default(99)
+  preferredDistance   Int      @default(50) // in miles/km
+
+  // Onboarding Status
+  onboardingComplete Boolean  @default(false)
+  onboardingStep     Int      @default(0)
+
+  // Daily Match System
+  lastMatchDate      DateTime?
+  matchesShownToday  Int       @default(0)
+
+  // Relationships
+  sentMatches     Match[] @relation("SentMatches")
+  receivedMatches Match[] @relation("ReceivedMatches")
+  sentMessages    Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+}
+
+// Daily Match - One match per day shown to each user
+model Match {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Match Participants
+  userId        String
+  matchedUserId String
+  user          UserProfile @relation("SentMatches", fields: [userId], references: [id])
+  matchedUser   UserProfile @relation("ReceivedMatches", fields: [matchedUserId], references: [id])
+
+  // Match Status
+  status         String   @default("pending") // pending, liked, disliked, mutual
+  userLiked      Boolean? // null = not responded, true = liked, false = disliked
+  matchedUserLiked Boolean? // null = not responded, true = liked, false = disliked
+
+  // Match Quality Score (from Daily Match Agent)
+  compatibilityScore Float
+  matchReason        String // AI-generated reason for the match
+
+  // Mutual Match (Chat unlocked)
+  isMutualMatch Boolean  @default(false)
+  chatUnlockedAt DateTime?
+
+  // Messages for mutual matches
+  messages Message[]
+
+  @@unique([userId, matchedUserId, createdAt])
+  @@index([userId, createdAt])
+  @@index([matchedUserId, createdAt])
+}
+
+// Chat Messages (only available for mutual matches)
+model Message {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  matchId String
+  match   Match  @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  senderId   String
+  receiverId String
+  sender     UserProfile @relation("SentMessages", fields: [senderId], references: [id])
+  receiver   UserProfile @relation("ReceivedMessages", fields: [receiverId], references: [id])
+
+  content String
+  read    Boolean @default(false)
+
+  @@index([matchId, createdAt])
+}
