@@ -1,7 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { callAIAgent } from '@/lib/aiAgent';
+import parseLLMJson from '@/lib/jsonParser';
 
 const PROFILE_BUILDER_AGENT_ID = process.env.PROFILE_BUILDER_AGENT_ID || '698781e787eeda742a24accd';
+const LYZR_API_URL = 'https://agent-prod.studio.lyzr.ai/v3/inference/chat/';
+const LYZR_API_KEY = process.env.LYZR_API_KEY || '';
+
+function generateUUID(): string {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,24 +25,60 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Call the Profile Builder Agent with correct parameter order: (message, agent_id, options)
-    const agentResponse = await callAIAgent(message, PROFILE_BUILDER_AGENT_ID, { session_id: sessionId });
-
-    // Check if the agent call was successful
-    if (!agentResponse.success) {
-      console.error('Agent call failed:', agentResponse.error);
+    if (!LYZR_API_KEY) {
       return NextResponse.json(
-        { error: agentResponse.error || 'Failed to get response from agent' },
+        { error: 'LYZR_API_KEY not configured' },
         { status: 500 }
       );
     }
 
-    // Extract the actual response from the normalized structure
-    const responseData = agentResponse.response?.result || agentResponse.response;
+    const finalSessionId = sessionId || `${PROFILE_BUILDER_AGENT_ID}-${generateUUID().substring(0, 12)}`;
+
+    const payload = {
+      message,
+      agent_id: PROFILE_BUILDER_AGENT_ID,
+      user_id: `user-${generateUUID()}`,
+      session_id: finalSessionId,
+    };
+
+    const response = await fetch(LYZR_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': LYZR_API_KEY,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const rawText = await response.text();
+
+    if (!response.ok) {
+      let errorMsg = `API returned status ${response.status}`;
+      try {
+        const errorData = parseLLMJson(rawText) || JSON.parse(rawText);
+        errorMsg = errorData?.error || errorData?.message || errorMsg;
+      } catch {}
+
+      console.error('Lyzr API error:', errorMsg);
+      return NextResponse.json(
+        { error: errorMsg },
+        { status: response.status }
+      );
+    }
+
+    const parsed = parseLLMJson(rawText);
+
+    if (parsed?.success === false && parsed?.error) {
+      console.error('Agent error:', parsed.error);
+      return NextResponse.json(
+        { error: parsed.error },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
-      response: responseData
+      response: parsed
     });
 
   } catch (error) {
