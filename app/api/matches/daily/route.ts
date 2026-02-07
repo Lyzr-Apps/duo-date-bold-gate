@@ -109,22 +109,20 @@ export async function POST(request: NextRequest) {
       })),
     });
 
-    // Call Daily Match Agent
-    const agentResponse = await callAIAgent(DAILY_MATCH_AGENT_ID, agentInput);
+    // Call Daily Match Agent with correct parameter order: (message, agent_id, options)
+    const agentResponse = await callAIAgent(agentInput, DAILY_MATCH_AGENT_ID, { user_id: userId });
 
-    // Parse agent response
-    let matchData;
-    try {
-      matchData = typeof agentResponse === 'string'
-        ? JSON.parse(agentResponse)
-        : agentResponse;
-    } catch (parseError) {
-      console.error('Failed to parse match agent response:', parseError);
+    // Check if the agent call was successful
+    if (!agentResponse.success) {
+      console.error('Match agent call failed:', agentResponse.error);
       return NextResponse.json(
-        { error: 'Invalid match response format' },
+        { error: agentResponse.error || 'Failed to get match from agent' },
         { status: 500 }
       );
     }
+
+    // Extract the actual response from the normalized structure
+    const matchData = agentResponse.response?.result || agentResponse.response;
 
     if (matchData.status === 'no_matches') {
       return NextResponse.json({
