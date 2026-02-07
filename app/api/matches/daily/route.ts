@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { mockPrisma as prisma } from '@/lib/mockDb';
 import { callAIAgent } from '@/lib/aiAgent';
 
 const DAILY_MATCH_AGENT_ID = process.env.DAILY_MATCH_AGENT_ID || '6987820187eeda742a24acd1';

@@ -156,12 +156,24 @@ export default function DoubleMate() {
       })
       const data = await response.json()
 
+      console.log('Initial onboarding response:', data)
+
       if (data.success && data.response) {
         const agentResponse: ProfileBuilderResponse = data.response
         setOnboardingMessages([{ role: 'agent', content: agentResponse.message }])
+      } else {
+        console.error('Failed to start onboarding:', data)
+        setOnboardingMessages([{
+          role: 'agent',
+          content: 'Hi! Welcome to DoubleMate. Let me help you create your profile. What\'s your name?'
+        }])
       }
     } catch (error) {
       console.error('Failed to start onboarding:', error)
+      setOnboardingMessages([{
+        role: 'agent',
+        content: 'Hi! Welcome to DoubleMate. Let me help you create your profile. What\'s your name?'
+      }])
     } finally {
       setIsOnboardingLoading(false)
     }
@@ -183,22 +195,35 @@ export default function DoubleMate() {
       })
       const data = await response.json()
 
+      console.log('Onboarding API response:', data)
+
       if (data.success && data.response) {
         const agentResponse: ProfileBuilderResponse = data.response
+        console.log('Agent response:', agentResponse)
+
         setOnboardingMessages(prev => [...prev, { role: 'agent', content: agentResponse.message }])
 
         // Update accumulated profile data
-        setAccumulatedProfileData(prev => ({
-          ...prev,
-          ...Object.fromEntries(
-            Object.entries(agentResponse.profileData).filter(([_, v]) => v !== null)
-          ),
-        }))
+        if (agentResponse.profileData) {
+          setAccumulatedProfileData(prev => ({
+            ...prev,
+            ...Object.fromEntries(
+              Object.entries(agentResponse.profileData).filter(([_, v]) => v !== null)
+            ),
+          }))
+        }
 
         // Check if onboarding is complete
         if (agentResponse.isComplete) {
           setTimeout(() => completeOnboarding(agentResponse.profileData), 2000)
         }
+      } else {
+        // Handle error response
+        console.error('API error:', data)
+        setOnboardingMessages(prev => [...prev, {
+          role: 'agent',
+          content: data.error || 'Sorry, I had trouble understanding. Could you try again?'
+        }])
       }
     } catch (error) {
       console.error('Onboarding chat error:', error)
